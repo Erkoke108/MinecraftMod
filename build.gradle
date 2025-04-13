@@ -1,50 +1,50 @@
 plugins {
     id 'net.minecraftforge.gradle' version '5.1.11'
+    id 'maven-publish'
 }
 
 group = 'com.example'
-archivesBaseName = 'minecraftmod'
 version = '1.0.0'
-description = 'Minecraft mod example'
+archivesBaseName = 'minecraftmod'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(19)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
 repositories {
-    maven { url 'https://maven.minecraftforge.net' }
     mavenCentral()
+    maven { url = uri("https://maven.minecraftforge.net/") }
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.21.0-51.0.33'
-    mappings 'net.minecraftforge:mappings:1.21.0-20230417-1.21.0'
-    modCompile 'net.minecraftforge:forge:1.21.0-51.0.33'
-    modCompile 'net.minecraftforge:forge:1.21.0-51.0.33'
+    // Minecraft and Forge dependencies
+    minecraft 'net.minecraft:minecraft:1.21'
+    mappings 'net.minecraftforge:mappings:2023.12.20'
+    modCompile 'net.minecraftforge:forge:51.0.33'
+
+    // Other dependencies if needed, e.g., for libraries or APIs
+    // compile 'some.library:version'
 }
 
-sourceSets.main.java.srcDirs = ['src/main/java']
-sourceSets.main.resources.srcDirs = ['src/main/resources']
+forge {
+    minecraftVersion = "1.21"
+    mappingsChannel = "official"
+    mappingsVersion = "2023.12.20"
+    // Add additional configuration if needed
+}
 
-tasks.named('processResources') {
-    from('src/main/resources') {
-        include '**/*.json'
+tasks.named('jar') {
+    manifest {
+        attributes(
+            'FML.ModVersion': version,
+            'FML.ModName': archivesBaseName,
+            'FML.ModId': archivesBaseName
+        )
     }
-    dependsOn 'compileJava'
-}
-
-tasks.named('build') {
-    dependsOn 'buildJar'
-}
-
-jar {
-    archiveBaseName.set('examplemod')
-    archiveVersion.set('1.0.0')
-}
-
-compileJava {
-    options.encoding = 'UTF-8'
 }
 
