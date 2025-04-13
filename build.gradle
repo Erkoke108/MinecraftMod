@@ -1,29 +1,71 @@
 plugins {
-    id 'net.minecraftforge.gradle' version '6.0.35'
+    id 'net.minecraftforge.gradle' version '5.1.11'
+    id 'maven-publish'
 }
 
-group = 'com.example' // Reemplázalo con tu propio paquete
-version = '1.0.0' // Define la versión de tu mod
+group = 'com.example'
+archivesBaseName = 'minecraftmod'
+version = '1.0'
+description = 'My first Minecraft mod'
+
+sourceCompatibility = '19' // Java 19, asegurado por tu configuración
+targetCompatibility = '19'
 
 repositories {
+    mavenCentral()
     maven { url 'https://files.minecraftforge.net/maven' }
 }
 
 dependencies {
-    // Define las dependencias de tu mod
-    minecraft 'net.minecraftforge:forge:1.18.2-40.1.0'
+    // Minecraft and Forge dependencies
+    minecraft 'net.minecraft:minecraft:1.21'
+    mappings 'net.minecraftforge:mappings:1.21-mapped-official'
+    fg.deobf 'net.minecraftforge:forge:1.21-51.0.33'
+    
+    // Modding API
+    implementation 'net.minecraftforge:forge:1.21-51.0.33'
+    
+    // Additional mod dependencies
+    // Uncomment and add more dependencies as needed:
+    // implementation 'com.some.library:some-dependency:1.0'
 }
 
 minecraft {
-    mappings channel: 'official', version: '1.18.2'
-    runs {
-        client {
-            workingDirectory project.file('run')
-            args '--tweakClass', 'net.minecraftforge.fml.loading.FMLClient'
-        }
-        server {
-            workingDirectory project.file('run')
-            args '--tweakClass', 'net.minecraftforge.fml.loading.FMLCommon'
-        }
+    version = "1.21-51.0.33"
+    runDir = "run"
+    mappings = "official" // Use official mappings for Minecraft 1.21
+    loader = '1.21-51.0.33'
+}
+
+processResources {
+    inputs.property "version", project.version
+    inputs.property "mcversion", "1.21"
+    filesMatching("mcmod.info") {
+        expand "version": project.version, "mcversion": "1.21"
     }
+}
+
+jar {
+    manifest {
+        attributes(
+            'Specification-Title': archivesBaseName,
+            'Specification-Version': '1',
+            'Specification-Vendor': 'example',
+            'Implementation-Title': archivesBaseName,
+            'Implementation-Version': version,
+            'Implementation-Vendor': 'example'
+        )
+    }
+}
+
+tasks.named('compileJava') {
+    options.encoding = 'UTF-8'
+}
+
+task createGitHubRelease(type: Exec) {
+    commandLine 'git', 'tag', 'v' + version
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
 }
