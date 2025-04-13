@@ -1,71 +1,50 @@
 plugins {
     id 'net.minecraftforge.gradle' version '5.1.11'
-    id 'maven-publish'
 }
 
 group = 'com.example'
 archivesBaseName = 'minecraftmod'
-version = '1.0'
-description = 'My first Minecraft mod'
+version = '1.0.0'
+description = 'Minecraft mod example'
 
-sourceCompatibility = '19' // Java 19, asegurado por tu configuración
-targetCompatibility = '19'
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(19)
+    }
+}
 
 repositories {
+    maven { url 'https://maven.minecraftforge.net' }
     mavenCentral()
-    maven { url 'https://files.minecraftforge.net/maven' }
 }
 
 dependencies {
-    // Minecraft and Forge dependencies
-    minecraft 'net.minecraft:minecraft:1.21'
-    mappings 'net.minecraftforge:mappings:1.21-mapped-official'
-    fg.deobf 'net.minecraftforge:forge:1.21-51.0.33'
-    
-    // Modding API
-    implementation 'net.minecraftforge:forge:1.21-51.0.33'
-    
-    // Additional mod dependencies
-    // Uncomment and add more dependencies as needed:
-    // implementation 'com.some.library:some-dependency:1.0'
+    minecraft 'net.minecraftforge:forge:1.21.0-51.0.33'
+    mappings 'net.minecraftforge:mappings:1.21.0-20230417-1.21.0'
+    modCompile 'net.minecraftforge:forge:1.21.0-51.0.33'
+    modCompile 'net.minecraftforge:forge:1.21.0-51.0.33'
 }
 
-minecraft {
-    version = "1.21-51.0.33"
-    runDir = "run"
-    mappings = "official" // Use official mappings for Minecraft 1.21
-    loader = '1.21-51.0.33'
-}
+sourceSets.main.java.srcDirs = ['src/main/java']
+sourceSets.main.resources.srcDirs = ['src/main/resources']
 
-processResources {
-    inputs.property "version", project.version
-    inputs.property "mcversion", "1.21"
-    filesMatching("mcmod.info") {
-        expand "version": project.version, "mcversion": "1.21"
+tasks.named('processResources') {
+    from('src/main/resources') {
+        include '**/*.json'
     }
+    dependsOn 'compileJava'
+}
+
+tasks.named('build') {
+    dependsOn 'buildJar'
 }
 
 jar {
-    manifest {
-        attributes(
-            'Specification-Title': archivesBaseName,
-            'Specification-Version': '1',
-            'Specification-Vendor': 'example',
-            'Implementation-Title': archivesBaseName,
-            'Implementation-Version': version,
-            'Implementation-Vendor': 'example'
-        )
-    }
+    archiveBaseName.set('examplemod')
+    archiveVersion.set('1.0.0')
 }
 
-tasks.named('compileJava') {
+compileJava {
     options.encoding = 'UTF-8'
 }
 
-task createGitHubRelease(type: Exec) {
-    commandLine 'git', 'tag', 'v' + version
-}
-
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-}
