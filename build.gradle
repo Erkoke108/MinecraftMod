@@ -1,5 +1,5 @@
 plugins {
-id 'net.minecraftforge.gradle' version '5.1.17' // Si esta es la versión más reciente compatible
+id 'net.minecraftforge.gradle' version '5.1.16' // Si esta es la versión más reciente compatible
 
     id 'maven-publish'
 }
