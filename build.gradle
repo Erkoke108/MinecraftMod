@@ -1,26 +1,41 @@
 plugins {
-    id 'net.minecraftforge.gradle' version '5.1.16'
+    id 'net.minecraftforge.gradle' version '5.1.17'
 }
 
 group = 'com.example'
-version = '1.0.0'
 archivesBaseName = 'minecraftmod'
-
-minecraft {
-    version = "1.21"
-    mappings = "official"
-    runDir = "run"
+version = '1.0-SNAPSHOT'
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(19)
+    }
 }
 
 repositories {
-    maven { url 'https://maven.minecraftforge.net/' }
     mavenCentral()
+    maven { url 'https://maven.minecraftforge.net' }
+    maven { url 'https://repo.spongepowered.org/maven' }
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.21-51.0.33'
+    // The Minecraft version you are targeting
+    minecraft 'com.mojang:minecraft:1.21'
+
+    // Forge version for Minecraft 1.21
+    mappings "net.minecraftforge:mappings:2025.4"
+    forge 'net.minecraftforge:forge:51.0.33'
 }
 
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
+tasks {
+    jar {
+        manifest {
+            attributes(
+                'Specification-Title': 'Minecraft Mod',
+                'Specification-Vendor': 'Example',
+                'Specification-Version': '1.0',
+                'Implementation-Title': archivesBaseName,
+                'Implementation-Version': version
+            )
+        }
+    }
 }
