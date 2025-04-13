@@ -1,5 +1,6 @@
 plugins {
-    id 'net.minecraftforge.gradle' version '5.1.11'
+id 'net.minecraftforge.gradle' version '5.1.17' // Si esta es la versión más reciente compatible
+
     id 'maven-publish'
 }
 
@@ -36,6 +37,12 @@ forge {
     mappingsChannel = "official"
     mappingsVersion = "2023.12.20"
     // Add additional configuration if needed
+}
+
+minecraft {
+    version = "1.21"
+    runDir = "run"
+    mappings = "official"
 }
 
 tasks.named('jar') {
