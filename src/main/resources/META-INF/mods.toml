@@ -72,11 +72,11 @@ description='''${mod_description}'''
 #[features.${mod_id}]
 #openGLVersion="[3.2,)"
 modLoader="javafml"
-loaderVersion="[46,)"
+loaderVersion="[51,)" #mandatory
 license="MIT"
 [[mods]]
 modId="miprimermod"
-version="1.0.0"
+version="1.0.0" #mandatory
 displayName="Mi Primer Mod"
 description='''Este es mi primer mod de Minecraft hecho con Forge.'''
 authors="Erkoke108"
