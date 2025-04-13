@@ -1,57 +1,26 @@
 plugins {
-id 'net.minecraftforge.gradle' version '5.1.16' // Si esta es la versión más reciente compatible
-
-    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '5.1.16'
 }
 
 group = 'com.example'
 version = '1.0.0'
 archivesBaseName = 'minecraftmod'
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
+minecraft {
+    version = "1.21"
+    mappings = "official"
+    runDir = "run"
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
-
 repositories {
+    maven { url 'https://maven.minecraftforge.net/' }
     mavenCentral()
-    maven { url 'https://maven.minecraftforge.net' }
 }
 
 dependencies {
-    // Minecraft and Forge dependencies
-    minecraft 'net.minecraft:minecraft:1.21'
-    mappings 'net.minecraftforge:mappings:2023.12.20'
-    modCompile 'net.minecraftforge:forge:51.0.33'
-
-    // Other dependencies if needed, e.g., for libraries or APIs
-    // compile 'some.library:version'
+    minecraft 'net.minecraftforge:forge:1.21-51.0.33'
 }
 
-forge {
-    minecraftVersion = "1.21"
-    mappingsChannel = "official"
-    mappingsVersion = "2023.12.20"
-    // Add additional configuration if needed
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
 }
-
-minecraft {
-    version = "1.21"
-    runDir = "run"
-    mappings = "official"
-}
-
-tasks.named('jar') {
-    manifest {
-        attributes(
-            'FML.ModVersion': version,
-            'FML.ModName': archivesBaseName,
-            'FML.ModId': archivesBaseName
-        )
-    }
-}
-
