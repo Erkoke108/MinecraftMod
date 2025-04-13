@@ -2,26 +2,28 @@ plugins {
     id 'net.minecraftforge.gradle' version '6.0.35'
 }
 
-group = 'com.erkoke108'  // Cambia esto por tu nombre de paquete o tu identificador de grupo
-archivesBaseName = 'MinecraftMod'  // Nombre base de tu mod
-version = '1.0.0'
+group = 'com.example' // Reemplázalo con tu propio paquete
+version = '1.0.0' // Define la versión de tu mod
 
-minecraft {
-    // Aquí defines la versión de Minecraft y Forge que usas
-    version = '1.21-Forge'  // La versión de Forge que usas
-    runDir = 'run'  // Directorio para ejecutar el mod en modo de desarrollo
+repositories {
+    maven { url 'https://files.minecraftforge.net/maven' }
 }
 
 dependencies {
-    // Añade las dependencias necesarias para tu mod, por ejemplo, Forge
-    implementation 'net.minecraftforge:forge:1.21.0-51.0.33'  // Asegúrate de que la versión coincida con la que deseas usar
+    // Define las dependencias de tu mod
+    minecraft 'net.minecraftforge:forge:1.18.2-40.1.0'
 }
 
-repositories {
-    // Añades el repositorio de Forge para poder descargar las dependencias
-    maven {
-        name = 'Forge'
-        url = uri('https://maven.minecraftforge.net/')
+minecraft {
+    mappings channel: 'official', version: '1.18.2'
+    runs {
+        client {
+            workingDirectory project.file('run')
+            args '--tweakClass', 'net.minecraftforge.fml.loading.FMLClient'
+        }
+        server {
+            workingDirectory project.file('run')
+            args '--tweakClass', 'net.minecraftforge.fml.loading.FMLCommon'
+        }
     }
-    mavenCentral()
 }
